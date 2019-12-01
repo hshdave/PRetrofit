@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Cache;
 import retrofit2.Call;
@@ -29,7 +30,28 @@ public class MainActivity extends AppCompatActivity {
 
         Dataservice service = Retrofitclient.getRetrofitInstance().create(Dataservice.class);
 
-        Call<Pokemon> call = service.getPokemons();
+
+        Call<List<Pokemon_>> call = service.getPArray();
+
+        call.enqueue(new Callback<List<Pokemon_>>() {
+            @Override
+            public void onResponse(Call<List<Pokemon_>> call, Response<List<Pokemon_>> response) {
+
+                ArrayList<Pokemon_> parray = new ArrayList<>(response.body());
+
+                generateRecycle(parray);
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Pokemon_>> call, Throwable t) {
+
+            }
+        });
+
+
+
+        /*Call<Pokemon> call = service.getPokemons();
 
         call.enqueue(new Callback<Pokemon>() {
             @Override
@@ -55,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Something Went Wrong!"+t.getMessage(),Toast.LENGTH_LONG).show();
 
             }
-        });
+        });*/
 
         System.out.println("Array List Size :"+pokearray.size());
 
